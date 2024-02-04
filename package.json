@@ -10,23 +10,33 @@
   "scripts": {
     "dev": "tsx watch --env-file .env src/server.ts",
     "start": "node build/server.js",
-    "build": "tsup src --out-dir build"
+    "build": "tsup src --out-dir build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:watch": "vitest --coverage",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@fastify/cookie": "^9.3.1",
     "@prisma/client": "5.9.0",
+    "bcryptjs": "2.4.3",
     "fastify": "^4.25.2",
     "sqlite3": "^5.1.7",
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/bcryptjs": "2.4.6",
     "@types/node": "^20.11.5",
     "@types/supertest": "^6.0.2",
+    "@vitest/coverage-v8": "1.2.2",
+    "@vitest/ui": "1.2.2",
     "eslint": "^8.56.0",
     "supertest": "^6.3.4",
     "tsup": "^8.0.1",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
-    "vitest": "^1.2.1"
+    "vite-tsconfig-paths": "4.3.1",
+    "vitest": "1.2.2"
   }
 }
