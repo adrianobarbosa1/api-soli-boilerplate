@@ -1,6 +1,5 @@
 import { BadRequestError } from "@/errors/bad-request-error";
-import { UsersPrismaRepository } from "@/repositories/prisma/users.prisma.repository";
-import { UserUseCase } from "@/useCases/user.useCase";
+import { makeUserUsercase } from "@/useCases/factory/make.user.useCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
@@ -14,8 +13,7 @@ async function createUser(req: FastifyRequest, res: FastifyReply) {
   const { name, email, password } = userValidation.parse(req.body);
 
   try {
-    const usersPrismaRepository = new UsersPrismaRepository();
-    const userUseCase = new UserUseCase(usersPrismaRepository);
+    const userUseCase = makeUserUsercase();
     await userUseCase.create({
       name,
       email,
