@@ -1,6 +1,5 @@
 import { NotAuthorizedError } from "@/errors/not-authorized-error";
-import { UsersPrismaRepository } from "@/repositories/prisma/users.prisma.repository";
-import { AuthenticateUseCase } from "@/useCases/authenticate.useCase";
+import { makeAuthUsercase } from "@/useCases/factory/make.auth.useCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 
@@ -13,8 +12,7 @@ export async function authLogin(req: FastifyRequest, res: FastifyReply) {
   const { email, password } = authValidation.parse(req.body);
 
   try {
-    const usersPrismaRepository = new UsersPrismaRepository();
-    const authUseCase = new AuthenticateUseCase(usersPrismaRepository);
+    const authUseCase = makeAuthUsercase();
     await authUseCase.login({
       email,
       password,
