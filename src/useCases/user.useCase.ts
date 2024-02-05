@@ -1,4 +1,5 @@
-import { UsersInterfaceRepository } from "@/repositories/users.interface.repository";
+import { BadRequestError } from "@/errors/bad-request-error";
+import { UsersRepository } from "@/repositories/users.repository";
 import { User } from "@prisma/client";
 import { hash } from "bcryptjs";
 
@@ -13,7 +14,7 @@ interface UserUseCaseResponse {
 }
 
 export class UserUseCase {
-  constructor(private usersRepository: UsersInterfaceRepository) {}
+  constructor(private usersRepository: UsersRepository) {}
 
   async create({
     name,
@@ -24,7 +25,8 @@ export class UserUseCase {
     const existUserWithSameEmail = await this.usersRepository.findByEmail(
       email
     );
-    if (existUserWithSameEmail) throw new Error("Email already exists");
+    if (existUserWithSameEmail)
+      throw new BadRequestError("Email already exists");
     const user = await this.usersRepository.create({
       name,
       email,
