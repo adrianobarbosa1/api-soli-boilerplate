@@ -8,7 +8,7 @@ const authValidation = z.object({
   password: z.string().min(6),
 });
 
-export async function authLogin(req: FastifyRequest, res: FastifyReply) {
+async function authLogin(req: FastifyRequest, res: FastifyReply) {
   const { email, password } = authValidation.parse(req.body);
 
   try {
