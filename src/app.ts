@@ -9,9 +9,11 @@ app.register(appRoutes);
 
 app.setErrorHandler((error, req, res) => {
   if (error instanceof ZodError) {
+    // throw new RequestValidationError(error.issues);
     return res.status(400).send({
-      message: "validation error",
-      issues: error.format(),
+      statusCode: 400,
+      message: "Invalid request parameters",
+      error: error.format(),
     });
   }
 
