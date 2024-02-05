@@ -1,20 +1,19 @@
+import { BadRequestError } from "@/errors/bad-request-error";
 import { UsersInMemoryRepository } from "@/repositories/in-memory/users.inMemory.repository";
 import { compare } from "bcryptjs";
-import { describe, expect, it } from "vitest";
-import { UserUseCase } from "./user.useCase";
+import { beforeEach, describe, expect, it } from "vitest";
+import { UserUseCase } from "../user.useCase";
+
+let usersInMemoryRepository: UsersInMemoryRepository;
+let userUseCase: UserUseCase;
 
 describe("users useCase", async () => {
-  // beforeAll(async () => {
-  //   await app.ready();
-  // });
-  // afterAll(async () => {
-  //   await app.close();
-  // });
+  beforeEach(() => {
+    usersInMemoryRepository = new UsersInMemoryRepository();
+    userUseCase = new UserUseCase(usersInMemoryRepository);
+  });
 
   it("deve poder criar um usuario", async () => {
-    const usersInMemoryRepository = new UsersInMemoryRepository();
-    const userUseCase = new UserUseCase(usersInMemoryRepository);
-
     const createUser = {
       name: "John Doe",
       email: "johndoe5@exemple.com",
@@ -27,9 +26,6 @@ describe("users useCase", async () => {
 
   //it should hash user password upon registration
   it("deve incriptografar a senha do usuário no momento do registro", async () => {
-    const usersInMemoryRepository = new UsersInMemoryRepository();
-    const userUseCase = new UserUseCase(usersInMemoryRepository);
-
     const createUser = {
       name: "John Doe",
       email: "johndoe5@exemple.com",
@@ -44,18 +40,18 @@ describe("users useCase", async () => {
 
   //should mpt be able to register with same email twice
   it("deve não poder criar usuario com email duplicado", async () => {
-    const usersInMemoryRepository = new UsersInMemoryRepository();
-    const userUseCase = new UserUseCase(usersInMemoryRepository);
-
-    const createUser = {
+    await userUseCase.create({
       name: "John Doe",
       email: "johndoe5@exemple.com",
       password: "123456",
-    };
-    await userUseCase.create(createUser);
+    });
 
-    await expect(() => userUseCase.create(createUser)).rejects.toThrow(
-      new Error("Email already exists")
-    );
+    await expect(() =>
+      userUseCase.create({
+        name: "John Doe",
+        email: "johndoe5@exemple.com",
+        password: "123456",
+      })
+    ).rejects.toBeInstanceOf(BadRequestError);
   });
 });
