@@ -1,18 +1,18 @@
-import { GymInMemoryRepository } from "@/repositories/in-memory/gyms.inMemory.repository";
+import { InMemoryGymRepository } from "@/repositories/in-memory/inMemory.gyms.repository";
 import { beforeEach, describe, expect, it } from "vitest";
 import { GymUseCase } from "../gym.useCase";
 
-let gymInMemoryRepository: GymInMemoryRepository;
-let gymUseCase: GymUseCase;
+let gymInMemoryRepository: InMemoryGymRepository;
+let sut: GymUseCase;
 
 describe("gym useCase", async () => {
   beforeEach(async () => {
-    gymInMemoryRepository = new GymInMemoryRepository();
-    gymUseCase = new GymUseCase(gymInMemoryRepository);
+    gymInMemoryRepository = new InMemoryGymRepository();
+    sut = new GymUseCase(gymInMemoryRepository);
   });
 
   it("deve poder criar uma gym-academia", async () => {
-    const { gym } = await gymUseCase.create({
+    const { gym } = await sut.create({
       title: "javascript Academia",
       description: null,
       phone: null,

@@ -1,16 +1,16 @@
 import { NotAuthorizedError } from "@/errors/not-authorized-error";
-import { UsersInMemoryRepository } from "@/repositories/in-memory/users.inMemory.repository";
+import { InMemoryUsersRepository } from "@/repositories/in-memory/inMemory.users.repository";
 import { hash } from "bcryptjs";
 import { beforeEach, describe, expect, it } from "vitest";
 import { AuthenticateUseCase } from "../authenticate.useCase";
 
-let usersInMemoryRepository: UsersInMemoryRepository;
-let authenticateUseCase: AuthenticateUseCase;
+let usersInMemoryRepository: InMemoryUsersRepository;
+let sut: AuthenticateUseCase;
 
 describe("authenticate useCase", async () => {
   beforeEach(() => {
-    usersInMemoryRepository = new UsersInMemoryRepository();
-    authenticateUseCase = new AuthenticateUseCase(usersInMemoryRepository);
+    usersInMemoryRepository = new InMemoryUsersRepository();
+    sut = new AuthenticateUseCase(usersInMemoryRepository);
   });
 
   it("deve poder se autenticar", async () => {
@@ -20,7 +20,7 @@ describe("authenticate useCase", async () => {
       passwordHash: await hash("123456", 6),
     });
 
-    const { user } = await authenticateUseCase.login({
+    const { user } = await sut.login({
       email: "jhondoe@exemple.com",
       password: "123456",
     });
@@ -30,7 +30,7 @@ describe("authenticate useCase", async () => {
 
   it("deve gerar error se email não existir", async () => {
     await expect(() =>
-      authenticateUseCase.login({
+      sut.login({
         email: "emailerrado@exemple.com",
         password: "123456",
       })
@@ -45,7 +45,7 @@ describe("authenticate useCase", async () => {
     });
 
     await expect(() =>
-      authenticateUseCase.login({
+      sut.login({
         email: "jhondoe@exemple.com",
         password: "senhaerrada",
       })
