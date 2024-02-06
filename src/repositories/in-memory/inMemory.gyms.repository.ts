@@ -2,7 +2,7 @@ import { Gym, Prisma } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { GymRepository } from "../gyms.repository";
 
-export class GymInMemoryRepository implements GymRepository {
+export class InMemoryGymRepository implements GymRepository {
   public items: Gym[] = [];
 
   async create(data: Prisma.GymCreateInput) {

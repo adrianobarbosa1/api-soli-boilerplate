@@ -3,7 +3,7 @@ import { randomUUID } from "crypto";
 import dayjs from "dayjs";
 import { CheckInRepository } from "../checkins.repository";
 
-export class CheckinInMemoryRepository implements CheckInRepository {
+export class InMemoryCheckinRepository implements CheckInRepository {
   public items: CheckIn[] = [];
 
   async create(data: Prisma.CheckInUncheckedCreateInput) {
@@ -37,5 +37,11 @@ export class CheckinInMemoryRepository implements CheckInRepository {
     }
 
     return checkInOnSameDate;
+  }
+
+  async findManyByUserId(userId: string, page: number) {
+    return this.items
+      .filter((checkIn) => checkIn.userId === userId)
+      .slice((page - 1) * 20, page * 20);
   }
 }

@@ -2,19 +2,13 @@ import { BadRequestError } from "@/errors/bad-request-error";
 import { NotFoundError } from "@/errors/not-found-error";
 import { CheckInRepository } from "@/repositories/checkins.repository";
 import { GymRepository } from "@/repositories/gyms.repository";
-import { CheckIn } from "@prisma/client";
+import {
+  CheckInCreateUseCaseRequest,
+  CheckInCreateUseCaseResponse,
+  CheckInGetAllUseCaseRequest,
+  CheckInGetAllUseCaseResponse,
+} from "./types.useCase";
 import { getDistanceBetweenCoordinates } from "./utils/getDistanceBetweenCoordenates";
-
-interface CheckInUseCaseRequest {
-  userId: string;
-  gymId: string;
-  userLatitude: number;
-  userLongitude: number;
-}
-
-interface CheckInUseCaseResponse {
-  checkIn: CheckIn;
-}
 
 export class CheckInUseCase {
   constructor(
@@ -27,7 +21,7 @@ export class CheckInUseCase {
     gymId,
     userLatitude,
     userLongitude,
-  }: CheckInUseCaseRequest): Promise<CheckInUseCaseResponse> {
+  }: CheckInCreateUseCaseRequest): Promise<CheckInCreateUseCaseResponse> {
     const gym = await this.gymsRepository.findById(gymId);
 
     if (!gym) {
@@ -63,6 +57,20 @@ export class CheckInUseCase {
 
     return {
       checkIn,
+    };
+  }
+
+  async getAll({
+    userId,
+    page,
+  }: CheckInGetAllUseCaseRequest): Promise<CheckInGetAllUseCaseResponse> {
+    const checkIns = await this.checkInsRepository.findManyByUserId(
+      userId,
+      page
+    );
+
+    return {
+      checkIns,
     };
   }
 }

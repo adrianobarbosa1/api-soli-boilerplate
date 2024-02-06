@@ -1,17 +1,13 @@
 import { BadRequestError } from "@/errors/bad-request-error";
+import { NotFoundError } from "@/errors/not-found-error";
 import { UsersRepository } from "@/repositories/users.repository";
-import { User } from "@prisma/client";
 import { hash } from "bcryptjs";
-
-interface UserUseCaseRequest {
-  name: string;
-  email: string;
-  password: string;
-}
-
-interface UserUseCaseResponse {
-  user: User;
-}
+import {
+  UserCreateUseCaseRequest,
+  UserCreateUseCaseResponse,
+  UserGetProfileUseCaseRequest,
+  UserGetProfileUseCaseResponse,
+} from "./types.useCase";
 
 export class UserUseCase {
   constructor(private usersRepository: UsersRepository) {}
@@ -20,7 +16,7 @@ export class UserUseCase {
     name,
     email,
     password,
-  }: UserUseCaseRequest): Promise<UserUseCaseResponse> {
+  }: UserCreateUseCaseRequest): Promise<UserCreateUseCaseResponse> {
     const passwordHash = await hash(password, 6);
     const existUserWithSameEmail = await this.usersRepository.findByEmail(
       email
@@ -32,6 +28,17 @@ export class UserUseCase {
       email,
       passwordHash,
     });
+
+    return {
+      user,
+    };
+  }
+
+  async getUserProfile({
+    userId,
+  }: UserGetProfileUseCaseRequest): Promise<UserGetProfileUseCaseResponse> {
+    const user = await this.usersRepository.findById(userId);
+    if (!user) throw new NotFoundError();
 
     return {
       user,
