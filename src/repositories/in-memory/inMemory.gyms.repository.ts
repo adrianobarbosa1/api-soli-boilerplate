@@ -25,7 +25,9 @@ export class InMemoryGymRepository implements GymRepository {
     return gym;
   }
 
-  searchMany(query: string, page: number) {
-    throw new Error("Method not implemented.");
+  async searchMany(query: string, page: number) {
+    return this.items
+      .filter((item) => item.title.includes(query))
+      .slice((page - 1) * 20, page * 20);
   }
 }

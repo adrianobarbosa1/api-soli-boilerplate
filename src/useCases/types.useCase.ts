@@ -1,4 +1,4 @@
-import { CheckIn, User } from "@prisma/client";
+import { CheckIn, Gym, User } from "@prisma/client";
 
 //USER
 //---------------CREATE USER------------------------
@@ -46,4 +46,26 @@ export interface getAllChekinsByUserIdUseCaseRequest {
 }
 export interface getAllChekinsByUserIdUseCaseResponse {
   checkInsCount: number;
+}
+
+//CHEKINS
+//---------------CREATE GYMS------------------------
+export interface GymCreateUseCaseRequest {
+  title: string;
+  description: string | null;
+  phone: string | null;
+  latitude: number;
+  longitude: number;
+}
+export interface GymCreateUseCaseResponse {
+  gym: Gym;
+}
+
+//---------------GETALLGYMS GYMS------------------------
+export interface GetAllGymsUseCaseRequest {
+  query: string;
+  page: number;
+}
+export interface GetAllGymsUseCaseResponse {
+  gyms: Gym[];
 }

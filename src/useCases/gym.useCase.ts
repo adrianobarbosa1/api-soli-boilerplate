@@ -1,17 +1,10 @@
 import { GymRepository } from "@/repositories/gyms.repository";
-import { Gym } from "@prisma/client";
-
-interface GymUseCaseRequest {
-  title: string;
-  description: string | null;
-  phone: string | null;
-  latitude: number;
-  longitude: number;
-}
-
-interface GymUseCaseResponse {
-  gym: Gym;
-}
+import {
+  GetAllGymsUseCaseRequest,
+  GetAllGymsUseCaseResponse,
+  GymCreateUseCaseRequest,
+  GymCreateUseCaseResponse,
+} from "./types.useCase";
 
 export class GymUseCase {
   constructor(private gymRepository: GymRepository) {}
@@ -22,7 +15,7 @@ export class GymUseCase {
     phone,
     latitude,
     longitude,
-  }: GymUseCaseRequest): Promise<GymUseCaseResponse> {
+  }: GymCreateUseCaseRequest): Promise<GymCreateUseCaseResponse> {
     const gym = await this.gymRepository.create({
       title,
       description,
@@ -33,6 +26,17 @@ export class GymUseCase {
 
     return {
       gym,
+    };
+  }
+
+  async getAllGyms({
+    query,
+    page,
+  }: GetAllGymsUseCaseRequest): Promise<GetAllGymsUseCaseResponse> {
+    const gyms = await this.gymRepository.searchMany(query, page);
+
+    return {
+      gyms,
     };
   }
 }
