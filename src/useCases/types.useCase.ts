@@ -39,3 +39,11 @@ export interface CheckInGetAllUseCaseRequest {
 export interface CheckInGetAllUseCaseResponse {
   checkIns: CheckIn[];
 }
+
+//---------------GETALLCHEKINSBYUSERID CHEKINS------------------------
+export interface getAllChekinsByUserIdUseCaseRequest {
+  userId: string;
+}
+export interface getAllChekinsByUserIdUseCaseResponse {
+  checkInsCount: number;
+}

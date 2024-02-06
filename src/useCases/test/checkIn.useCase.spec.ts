@@ -150,4 +150,24 @@ describe("checkin useCase", async () => {
       ]);
     });
   });
+
+  describe("getAllChekinsByUserId checkin", async () => {
+    it("deve ser capaz de obter a contagem de check-ins a partir das métricas", async () => {
+      await checkInInMemoryRepository.create({
+        gymId: "gym-01",
+        userId: "user-01",
+      });
+
+      await checkInInMemoryRepository.create({
+        gymId: "gym-02",
+        userId: "user-01",
+      });
+
+      const { checkInsCount } = await sut.getAllChekinsByUserId({
+        userId: "user-01",
+      });
+
+      expect(checkInsCount).toEqual(2);
+    });
+  });
 });

@@ -7,6 +7,8 @@ import {
   CheckInCreateUseCaseResponse,
   CheckInGetAllUseCaseRequest,
   CheckInGetAllUseCaseResponse,
+  getAllChekinsByUserIdUseCaseRequest,
+  getAllChekinsByUserIdUseCaseResponse,
 } from "./types.useCase";
 import { getDistanceBetweenCoordinates } from "./utils/getDistanceBetweenCoordenates";
 
@@ -71,6 +73,16 @@ export class CheckInUseCase {
 
     return {
       checkIns,
+    };
+  }
+
+  async getAllChekinsByUserId({
+    userId,
+  }: getAllChekinsByUserIdUseCaseRequest): Promise<getAllChekinsByUserIdUseCaseResponse> {
+    const checkInsCount = await this.checkInsRepository.countByUserId(userId);
+
+    return {
+      checkInsCount,
     };
   }
 }
