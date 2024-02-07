@@ -1,5 +1,5 @@
-import { NotAuthorizedError } from "@/errors/not-authorized-error";
 import { UsersRepository } from "@/repositories/users.repository";
+import { NotAuthorizedError } from "@/useCases/errors/not-authorized-error";
 import { User } from "@prisma/client";
 import { compare } from "bcryptjs";
 

@@ -1,4 +1,4 @@
-import { NotAuthorizedError } from "@/errors/not-authorized-error";
+import { NotAuthorizedError } from "@/useCases/errors/not-authorized-error";
 import { makeAuthUsercase } from "@/useCases/factory/make.auth.useCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";

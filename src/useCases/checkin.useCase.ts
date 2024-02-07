@@ -1,7 +1,7 @@
-import { BadRequestError } from "@/errors/bad-request-error";
-import { NotFoundError } from "@/errors/not-found-error";
 import { CheckInRepository } from "@/repositories/checkins.repository";
 import { GymRepository } from "@/repositories/gyms.repository";
+import { BadRequestError } from "@/useCases/errors/bad-request-error";
+import { NotFoundError } from "@/useCases/errors/not-found-error";
 import dayjs from "dayjs";
 import {
   CheckInCreateUseCaseRequest,

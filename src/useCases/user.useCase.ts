@@ -1,6 +1,6 @@
-import { BadRequestError } from "@/errors/bad-request-error";
-import { NotFoundError } from "@/errors/not-found-error";
 import { UsersRepository } from "@/repositories/users.repository";
+import { BadRequestError } from "@/useCases/errors/bad-request-error";
+import { NotFoundError } from "@/useCases/errors/not-found-error";
 import { hash } from "bcryptjs";
 import {
   UserCreateUseCaseRequest,

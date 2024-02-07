@@ -1,4 +1,4 @@
-import { BadRequestError } from "@/errors/bad-request-error";
+import { BadRequestError } from "@/useCases/errors/bad-request-error";
 import { makeUserUsercase } from "@/useCases/factory/make.user.useCase";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";

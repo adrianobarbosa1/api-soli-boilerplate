@@ -1,5 +1,5 @@
-import { NotAuthorizedError } from "@/errors/not-authorized-error";
 import { InMemoryUsersRepository } from "@/repositories/in-memory/inMemory.users.repository";
+import { NotAuthorizedError } from "@/useCases/errors/not-authorized-error";
 import { hash } from "bcryptjs";
 import { beforeEach, describe, expect, it } from "vitest";
 import { AuthenticateUseCase } from "../authenticate.useCase";
