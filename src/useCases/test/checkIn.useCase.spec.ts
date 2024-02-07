@@ -1,4 +1,5 @@
 import { BadRequestError } from "@/errors/bad-request-error";
+import { NotFoundError } from "@/errors/not-found-error";
 import { InMemoryCheckinRepository } from "@/repositories/in-memory/inMemory.checkIns.repository";
 import { InMemoryGymRepository } from "@/repositories/in-memory/inMemory.gyms.repository";
 import { Decimal } from "@prisma/client/runtime/library";
@@ -168,6 +169,51 @@ describe("checkin useCase", async () => {
       });
 
       expect(checkInsCount).toEqual(2);
+    });
+  });
+
+  describe("validateCheckin checkin", async () => {
+    it("deve ser capaz de validar o check-in", async () => {
+      const createdCheckIn = await checkInInMemoryRepository.create({
+        gymId: "gym-01",
+        userId: "user-01",
+      });
+
+      const { checkIn } = await sut.validateCheckin({
+        checkInId: createdCheckIn.id,
+      });
+
+      expect(checkIn.validatedAt).toEqual(expect.any(Date));
+      expect(checkInInMemoryRepository.items[0].validatedAt).toEqual(
+        expect.any(Date)
+      );
+    });
+
+    it("não deve ser capaz de validar um check-in inexistente", async () => {
+      await expect(() =>
+        sut.validateCheckin({
+          checkInId: "inexistent-check-in-id",
+        })
+      ).rejects.toBeInstanceOf(NotFoundError);
+    });
+
+    it("não deverá conseguir validar o check-in após 20 minutos da sua criação", async () => {
+      vi.setSystemTime(new Date(2023, 0, 1, 13, 40));
+
+      const createdCheckIn = await checkInInMemoryRepository.create({
+        gymId: "gym-01",
+        userId: "user-01",
+      });
+
+      const twentyOneMinutesInMs = 1000 * 60 * 21;
+
+      vi.advanceTimersByTime(twentyOneMinutesInMs);
+
+      await expect(() =>
+        sut.validateCheckin({
+          checkInId: createdCheckIn.id,
+        })
+      ).rejects.toBeInstanceOf(Error);
     });
   });
 });

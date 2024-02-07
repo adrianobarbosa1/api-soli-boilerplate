@@ -48,7 +48,15 @@ export interface getAllChekinsByUserIdUseCaseResponse {
   checkInsCount: number;
 }
 
-//CHEKINS
+//---------------validateCheckin CHEKINS------------------------
+export interface ValidateCheckinRequest {
+  checkInId: string;
+}
+export interface ValidateCheckinResponse {
+  checkIn: CheckIn;
+}
+
+//GYMS
 //---------------CREATE GYMS------------------------
 export interface GymCreateUseCaseRequest {
   title: string;

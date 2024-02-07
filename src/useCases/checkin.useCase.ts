@@ -2,11 +2,14 @@ import { BadRequestError } from "@/errors/bad-request-error";
 import { NotFoundError } from "@/errors/not-found-error";
 import { CheckInRepository } from "@/repositories/checkins.repository";
 import { GymRepository } from "@/repositories/gyms.repository";
+import dayjs from "dayjs";
 import {
   CheckInCreateUseCaseRequest,
   CheckInCreateUseCaseResponse,
   CheckInGetAllUseCaseRequest,
   CheckInGetAllUseCaseResponse,
+  ValidateCheckinRequest,
+  ValidateCheckinResponse,
   getAllChekinsByUserIdUseCaseRequest,
   getAllChekinsByUserIdUseCaseResponse,
 } from "./types.useCase";
@@ -83,6 +86,33 @@ export class CheckInUseCase {
 
     return {
       checkInsCount,
+    };
+  }
+
+  async validateCheckin({
+    checkInId,
+  }: ValidateCheckinRequest): Promise<ValidateCheckinResponse> {
+    const checkIn = await this.checkInsRepository.findById(checkInId);
+
+    if (!checkIn) {
+      throw new NotFoundError();
+    }
+
+    const distanceInMinutesFromCheckInCreation = dayjs(new Date()).diff(
+      checkIn.createdAt,
+      "minutes"
+    );
+
+    if (distanceInMinutesFromCheckInCreation > 20) {
+      throw new BadRequestError("Checkin expired");
+    }
+
+    checkIn.validatedAt = new Date();
+
+    await this.checkInsRepository.save(checkIn);
+
+    return {
+      checkIn,
     };
   }
 }
