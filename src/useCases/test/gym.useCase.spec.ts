@@ -77,4 +77,32 @@ describe("gym useCase", async () => {
       ]);
     });
   });
+
+  describe("gym findNearbGyms", async () => {
+    it("deve ser capaz de buscar academias próximas", async () => {
+      await gymInMemoryRepository.create({
+        title: "Near Gym",
+        description: null,
+        phone: null,
+        latitude: -27.2092052,
+        longitude: -49.6401091,
+      });
+
+      await gymInMemoryRepository.create({
+        title: "Far Gym",
+        description: null,
+        phone: null,
+        latitude: -27.0610928,
+        longitude: -49.5229501,
+      });
+
+      const { gyms } = await sut.findNearbGyms({
+        userLatitude: -27.2092052,
+        userLongitude: -49.6401091,
+      });
+
+      expect(gyms).toHaveLength(1);
+      expect(gyms).toEqual([expect.objectContaining({ title: "Near Gym" })]);
+    });
+  });
 });

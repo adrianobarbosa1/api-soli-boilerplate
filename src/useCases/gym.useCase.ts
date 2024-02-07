@@ -1,5 +1,7 @@
 import { GymRepository } from "@/repositories/gyms.repository";
 import {
+  FindNearbGymsUseCaseRequest,
+  FindNearbGymsUseCaseResponse,
   GetAllGymsUseCaseRequest,
   GetAllGymsUseCaseResponse,
   GymCreateUseCaseRequest,
@@ -34,6 +36,20 @@ export class GymUseCase {
     page,
   }: GetAllGymsUseCaseRequest): Promise<GetAllGymsUseCaseResponse> {
     const gyms = await this.gymRepository.searchMany(query, page);
+
+    return {
+      gyms,
+    };
+  }
+
+  async findNearbGyms({
+    userLatitude,
+    userLongitude,
+  }: FindNearbGymsUseCaseRequest): Promise<FindNearbGymsUseCaseResponse> {
+    const gyms = await this.gymRepository.findManyNearby({
+      latitude: userLatitude,
+      longitude: userLongitude,
+    });
 
     return {
       gyms,

@@ -69,3 +69,12 @@ export interface GetAllGymsUseCaseRequest {
 export interface GetAllGymsUseCaseResponse {
   gyms: Gym[];
 }
+
+//---------------findNearbGyms GYMS------------------------
+export interface FindNearbGymsUseCaseRequest {
+  userLatitude: number;
+  userLongitude: number;
+}
+export interface FindNearbGymsUseCaseResponse {
+  gyms: Gym[];
+}
