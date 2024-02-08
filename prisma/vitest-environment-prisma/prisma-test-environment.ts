@@ -1,4 +1,3 @@
-import { env } from "@/env";
 import { PrismaClient } from "@prisma/client";
 import { execSync } from "child_process";
 import { randomUUID } from "crypto";
@@ -7,7 +6,10 @@ import { Environment } from "vitest";
 const prisma = new PrismaClient();
 
 function generateDatabaseURL(schema: string) {
-  const url = new URL(env.DATABASE_URL);
+  if (!process.env.DATABASE_URL) {
+    throw new Error("Please provide a DATABASE_URL environment variable.");
+  }
+  const url = new URL(process.env.DATABASE_URL);
 
   url.searchParams.set("schema", schema);
 
@@ -21,7 +23,7 @@ export default <Environment>{
     const schema = randomUUID();
     const databaseURL = generateDatabaseURL(schema);
 
-    env.DATABASE_URL = databaseURL;
+    process.env.DATABASE_URL = databaseURL;
 
     execSync("npx prisma migrate deploy");
 
