@@ -30,6 +30,6 @@ describe("USER e2e", async () => {
       .set("Authorization", `Bearer ${token}`)
       .send();
 
-    expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(200);
   });
 });
