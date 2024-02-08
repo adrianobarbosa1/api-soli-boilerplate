@@ -3,7 +3,7 @@ import { BadRequestError } from "@/useCases/errors/bad-request-error";
 import { NotFoundError } from "@/useCases/errors/not-found-error";
 import { compare, hash } from "bcryptjs";
 import { beforeEach, describe, expect, it } from "vitest";
-import { UserUseCase } from "../user.useCase";
+import { UserUseCase } from "../../useCases/user.useCase";
 
 let usersInMemoryRepository: InMemoryUsersRepository;
 let sut: UserUseCase;

@@ -4,7 +4,7 @@ import { BadRequestError } from "@/useCases/errors/bad-request-error";
 import { NotFoundError } from "@/useCases/errors/not-found-error";
 import { Decimal } from "@prisma/client/runtime/library";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { CheckInUseCase } from "../checkin.useCase";
+import { CheckInUseCase } from "../../useCases/checkin.useCase";
 
 let checkInInMemoryRepository: InMemoryCheckinRepository;
 let gymInMemoryRepository: InMemoryGymRepository;

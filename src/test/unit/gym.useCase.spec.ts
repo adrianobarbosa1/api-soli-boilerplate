@@ -1,6 +1,6 @@
 import { InMemoryGymRepository } from "@/repositories/in-memory/inMemory.gyms.repository";
 import { beforeEach, describe, expect, it } from "vitest";
-import { GymUseCase } from "../gym.useCase";
+import { GymUseCase } from "../../useCases/gym.useCase";
 
 let gymInMemoryRepository: InMemoryGymRepository;
 let sut: GymUseCase;
