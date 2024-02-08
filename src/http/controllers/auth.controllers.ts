@@ -13,17 +13,28 @@ async function authLogin(req: FastifyRequest, res: FastifyReply) {
 
   try {
     const authUseCase = makeAuthUsercase();
-    await authUseCase.login({
+    const { user } = await authUseCase.login({
       email,
       password,
     });
+
+    const token = await res.jwtSign(
+      {},
+      {
+        sign: {
+          sub: user.id,
+        },
+      }
+    );
+
+    return res.status(200).send({ token });
   } catch (err) {
     if (err instanceof NotAuthorizedError) {
       return res.status(err.statusCode).send({ message: err.message });
     }
-  }
 
-  return res.status(200).send();
+    throw err;
+  }
 }
 
 export const authController = {

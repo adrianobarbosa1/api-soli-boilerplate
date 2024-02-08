@@ -9,7 +9,7 @@ const userValidation = z.object({
   password: z.string().min(6),
 });
 
-async function createUser(req: FastifyRequest, res: FastifyReply) {
+async function userCreate(req: FastifyRequest, res: FastifyReply) {
   const { name, email, password } = userValidation.parse(req.body);
 
   try {
@@ -28,6 +28,21 @@ async function createUser(req: FastifyRequest, res: FastifyReply) {
   return res.status(201).send();
 }
 
+async function userMe(req: FastifyRequest, res: FastifyReply) {
+  const userUseCase = makeUserUsercase();
+  const { user } = await userUseCase.getUserProfile({
+    userId: req.user.sub,
+  });
+
+  return res.status(201).send({
+    user: {
+      ...user,
+      passwordHash: undefined,
+    },
+  });
+}
+
 export const userController = {
-  createUser,
+  userCreate,
+  userMe,
 };
