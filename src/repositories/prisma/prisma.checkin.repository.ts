@@ -1,9 +1,9 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/database/prismaClient";
 import { CheckIn, Prisma } from "@prisma/client";
 import dayjs from "dayjs";
 import { CheckInRepository } from "../checkins.repository";
 
-export class PrimaCheckinRepository implements CheckInRepository {
+export class PrismaCheckinRepository implements CheckInRepository {
   async create(data: Prisma.CheckInUncheckedCreateInput) {
     const checkIn = await prisma.checkIn.create({
       data,
