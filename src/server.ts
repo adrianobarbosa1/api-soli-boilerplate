@@ -1,6 +1,7 @@
 import { app } from "./app";
 import { prisma } from "./database/prismaClient";
 import { env } from "./env";
+import { DatabaseConnectionError } from "./useCases/errors/database-connection-error";
 import { startLoadingEffect, stopLoadingEffect } from "./utils/loadingEffect";
 
 const start = async () => {
@@ -21,9 +22,8 @@ const start = async () => {
       });
   } catch (err) {
     if (loadingInterval !== null) stopLoadingEffect(loadingInterval);
-    console.error("Failed to connect to database ❌");
     console.error(err);
-    process.exit(1);
+    throw new DatabaseConnectionError();
   }
 };
 

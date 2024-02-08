@@ -3,6 +3,7 @@ import fastify from "fastify";
 import { ZodError } from "zod";
 import { env } from "./env";
 import { appRoutes } from "./http/routes";
+import { InternalServerError } from "./useCases/errors/internal-server-error";
 
 export const app = fastify();
 
@@ -28,5 +29,5 @@ app.setErrorHandler((error, req, res) => {
     // ferramenta de observalidade
   }
 
-  return res.status(500).send({ message: "Internal server error." });
+  throw new InternalServerError();
 });
