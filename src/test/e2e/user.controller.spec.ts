@@ -11,12 +11,24 @@ describe("USER e2e", async () => {
     await app.close();
   });
 
-  it("deve poder criar um usuário", async () => {
-    const response = await request(app.server).post("/users").send({
+  it("deve poder buscar usuário pelo token", async () => {
+    await request(app.server).post("/auth/register").send({
       name: "John Doe",
       email: "johndoe@example.com",
       password: "123456",
     });
+
+    const loginResponse = await request(app.server).post("/auth/login").send({
+      email: "johndoe@example.com",
+      password: "123456",
+    });
+
+    const { token } = loginResponse.body;
+
+    const response = await request(app.server)
+      .get("/users/me")
+      .set("Authorization", `Bearer ${token}`)
+      .send();
 
     expect(response.statusCode).toEqual(201);
   });
