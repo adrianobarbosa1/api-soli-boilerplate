@@ -26,8 +26,6 @@ describe("checkin get all e2e", async () => {
       },
     });
 
-    console.log(gym);
-
     let checkIn = await prisma.checkIn.create({
       data: {
         gymId: gym.id,
@@ -35,14 +33,10 @@ describe("checkin get all e2e", async () => {
       },
     });
 
-    console.log(checkIn);
-
     const response = await request(app.server)
       .patch(`/checkins/${checkIn.id}/validate`)
       .set("Authorization", `Bearer ${token}`)
       .send();
-
-    console.log(response);
 
     expect(response.statusCode).toEqual(204);
 
