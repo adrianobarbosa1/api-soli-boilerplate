@@ -1,4 +1,4 @@
-import { getDistanceBetweenCoordinates } from "@/useCases/utils/getDistanceBetweenCoordenates";
+import { getDistanceBetweenCoordinates } from "@/utils/getDistanceBetweenCoordenates";
 import { Gym, Prisma } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { FindManyNearbyParams, GymRepository } from "../gyms.repository";

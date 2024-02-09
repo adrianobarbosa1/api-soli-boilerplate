@@ -6,7 +6,7 @@ import {
   GetAllGymsUseCaseResponse,
   GymCreateUseCaseRequest,
   GymCreateUseCaseResponse,
-} from "./types.useCase";
+} from "./gym.types";
 
 export class GymUseCase {
   constructor(private gymRepository: GymRepository) {}

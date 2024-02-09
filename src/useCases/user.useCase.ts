@@ -7,7 +7,7 @@ import {
   UserCreateUseCaseResponse,
   UserGetProfileUseCaseRequest,
   UserGetProfileUseCaseResponse,
-} from "./types.useCase";
+} from "./user.types";
 
 export class UserUseCase {
   constructor(private usersRepository: UsersRepository) {}

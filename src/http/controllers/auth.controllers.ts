@@ -3,16 +3,10 @@ import { NotAuthorizedError } from "@/useCases/errors/not-authorized-error";
 import { makeAuthUsercase } from "@/useCases/factory/make.auth.useCase";
 import { makeUserUsercase } from "@/useCases/factory/make.user.useCase";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { z } from "zod";
-
-const authRegisterValid = z.object({
-  name: z.string(),
-  email: z.string().email(),
-  password: z.string().min(6),
-});
+import { authValidation } from "../validations/auth.validations";
 
 async function authRegister(req: FastifyRequest, res: FastifyReply) {
-  const { name, email, password } = authRegisterValid.parse(req.body);
+  const { name, email, password } = authValidation.authRegister.parse(req.body);
 
   try {
     const userUseCase = makeUserUsercase();
@@ -30,13 +24,8 @@ async function authRegister(req: FastifyRequest, res: FastifyReply) {
   return res.status(201).send();
 }
 
-const authLoginValid = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-});
-
 async function authLogin(req: FastifyRequest, res: FastifyReply) {
-  const { email, password } = authLoginValid.parse(req.body);
+  const { email, password } = authValidation.authLogin.parse(req.body);
 
   try {
     const authUseCase = makeAuthUsercase();

@@ -3,6 +3,7 @@ import { GymRepository } from "@/repositories/gyms.repository";
 import { BadRequestError } from "@/useCases/errors/bad-request-error";
 import { NotFoundError } from "@/useCases/errors/not-found-error";
 import dayjs from "dayjs";
+import { getDistanceBetweenCoordinates } from "../utils/getDistanceBetweenCoordenates";
 import {
   CheckInCreateUseCaseRequest,
   CheckInCreateUseCaseResponse,
@@ -12,8 +13,7 @@ import {
   ValidateCheckinResponse,
   getAllChekinsByUserIdUseCaseRequest,
   getAllChekinsByUserIdUseCaseResponse,
-} from "./types.useCase";
-import { getDistanceBetweenCoordinates } from "./utils/getDistanceBetweenCoordenates";
+} from "./checkin.types";
 
 export class CheckInUseCase {
   constructor(
