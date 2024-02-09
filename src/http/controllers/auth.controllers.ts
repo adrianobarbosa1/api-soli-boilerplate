@@ -35,7 +35,9 @@ async function authLogin(req: FastifyRequest, res: FastifyReply) {
     });
 
     const token = await res.jwtSign(
-      {},
+      {
+        role: user.role,
+      },
       {
         sign: {
           sub: user.id,
@@ -44,7 +46,9 @@ async function authLogin(req: FastifyRequest, res: FastifyReply) {
     );
 
     const refreshToken = await res.jwtSign(
-      {},
+      {
+        role: user.role,
+      },
       {
         sign: {
           sub: user.id,
@@ -74,8 +78,10 @@ async function authLogin(req: FastifyRequest, res: FastifyReply) {
 async function refreshToken(req: FastifyRequest, res: FastifyReply) {
   await req.jwtVerify({ onlyCookie: true });
 
+  const { role } = req.user;
+
   const token = await res.jwtSign(
-    {},
+    { role },
     {
       sign: {
         sub: req.user.sub,
@@ -84,7 +90,7 @@ async function refreshToken(req: FastifyRequest, res: FastifyReply) {
   );
 
   const refreshToken = await res.jwtSign(
-    {},
+    { role },
     {
       sign: {
         sub: req.user.sub,
