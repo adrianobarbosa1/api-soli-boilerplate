@@ -51,6 +51,7 @@ async function checkinValidate(req: FastifyRequest, res: FastifyReply) {
   const { checkInId } = checkinValidation.checkinValidateParams.parse(
     req.params
   );
+
   const checkinUseCase = makeCheckinUseCase();
   await checkinUseCase.validateCheckin({ checkInId });
   return res.status(204).send();
