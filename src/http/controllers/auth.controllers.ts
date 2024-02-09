@@ -43,7 +43,25 @@ async function authLogin(req: FastifyRequest, res: FastifyReply) {
       }
     );
 
-    return res.status(200).send({ token });
+    const refreshToken = await res.jwtSign(
+      {},
+      {
+        sign: {
+          sub: user.id,
+          expiresIn: "1d",
+        },
+      }
+    );
+
+    return res
+      .setCookie("refreshToken", refreshToken, {
+        path: "/",
+        secure: true,
+        sameSite: true,
+        httpOnly: true,
+      })
+      .status(200)
+      .send({ token });
   } catch (err) {
     if (err instanceof NotAuthorizedError) {
       return res.status(err.statusCode).send({ message: err.message });
@@ -53,7 +71,41 @@ async function authLogin(req: FastifyRequest, res: FastifyReply) {
   }
 }
 
+async function refreshToken(req: FastifyRequest, res: FastifyReply) {
+  await req.jwtVerify({ onlyCookie: true });
+
+  const token = await res.jwtSign(
+    {},
+    {
+      sign: {
+        sub: req.user.sub,
+      },
+    }
+  );
+
+  const refreshToken = await res.jwtSign(
+    {},
+    {
+      sign: {
+        sub: req.user.sub,
+        expiresIn: "1d",
+      },
+    }
+  );
+
+  return res
+    .setCookie("refreshToken", refreshToken, {
+      path: "/",
+      secure: true,
+      sameSite: true,
+      httpOnly: true,
+    })
+    .status(200)
+    .send({ token });
+}
+
 export const authController = {
   authRegister,
   authLogin,
+  refreshToken,
 };
