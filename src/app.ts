@@ -2,7 +2,7 @@ import fastifyCookie from "@fastify/cookie";
 import fastifyJwt from "@fastify/jwt";
 import fastify from "fastify";
 import { ZodError } from "zod";
-import { env } from "./env";
+import { env } from "./config";
 import { appRoutes } from "./http/routes";
 import { InternalServerError } from "./useCases/errors/internal-server-error";
 

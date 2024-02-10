@@ -1,6 +1,6 @@
 import { app } from "./app";
+import { env } from "./config";
 import { prisma } from "./database/prismaClient";
-import { env } from "./env";
 import { DatabaseConnectionError } from "./useCases/errors/database-connection-error";
 import { startLoadingEffect, stopLoadingEffect } from "./utils/loadingEffect";
 

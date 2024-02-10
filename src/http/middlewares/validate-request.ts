@@ -1,4 +1,4 @@
-import { env } from "@/env";
+import { env } from "@/config";
 import { RequestValidationError } from "@/useCases/errors/request-validation-error";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ZodError, ZodSchema } from "zod";
