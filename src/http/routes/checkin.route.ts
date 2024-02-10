@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { checkinController } from "../controllers/checkin.controllers";
 import { auth } from "../middlewares/auth-verify-jwt";
-import { verifyUserRole } from "../middlewares/verify-user-role";
+import { authRoles } from "../middlewares/authRoles";
 
 export async function checkinRoute(app: FastifyInstance) {
   app.addHook("onRequest", auth);
@@ -10,7 +10,7 @@ export async function checkinRoute(app: FastifyInstance) {
   app.get("/metrics", checkinController.checkinGetAllChekinsByUserId);
   app.patch(
     "/:checkInId/validate",
-    { onRequest: [verifyUserRole("ADMIN")] },
+    { onRequest: [authRoles(["manageUsers"])] },
     checkinController.checkinValidate
   );
 }
